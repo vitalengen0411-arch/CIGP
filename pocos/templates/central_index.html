@@ -1,0 +1,131 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+    {{ block.super }}
+
+    <style>
+        #header {
+            padding: 12px 24px;
+        }
+
+        #site-name {
+            font-size: 21px;
+        }
+
+        #user-tools {
+            font-size: 10px;
+        }
+
+        #content {
+            padding: 20px 24px;
+        }
+
+        .boas-vindas {
+            margin: 0 0 6px;
+            color: var(--body-fg);
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .orientacao {
+            margin: 0 0 14px;
+            color: var(--body-fg);
+            font-size: 12px;
+        }
+
+        .menus-cigp {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--darkened-bg);
+            border: 1px solid var(--hairline-color);
+            border-radius: 6px;
+        }
+
+        .menus-cigp .menu-cigp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 100px;
+            min-height: 34px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background: var(--primary);
+            color: white;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .menus-cigp a.menu-cigp:hover {
+            background: var(--secondary);
+        }
+
+        .menus-cigp .menu-cigp:disabled {
+            background: var(--border-color);
+            color: var(--body-quiet-color);
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 600px) {
+            #header {
+                padding: 12px 16px;
+            }
+
+            #site-name {
+                font-size: 17px;
+            }
+
+            #content {
+                padding: 16px;
+            }
+
+            .boas-vindas {
+                font-size: 14px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block content %}
+    <h2 class="boas-vindas">
+        Bem-vindo à Central de Informações da Gerência de Pinheiro — CIGP
+    </h2>
+
+    <p class="orientacao">
+        Selecione o Menu que deseja prosseguir
+    </p>
+
+    <nav class="menus-cigp" aria-label="Menus da plataforma">
+        {% if perms.pocos.view_poco or perms.pocos.change_poco %}
+            <a
+                class="menu-cigp"
+                href="{% url 'admin:pocos_poco_changelist' %}"
+            >
+                Poços
+            </a>
+        {% endif %}
+
+       <a
+    class="menu-cigp"
+    href="{% url 'lista_etas' %}"
+>
+    ETAs
+</a>
+                <a
+            class="menu-cigp"
+            href="{% url 'mapa_sistemas' %}"
+        >
+            Mapa dos Sistemas
+        </a>
+    </nav>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Registro {{ poco.identificacao }} — CIGP</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f7;
+            color: #17313b;
+        }
+
+        header {
+            background: #073e4e;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 12px 0;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        a {
+            color: #087f86;
+        }
+
+        .acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .botao {
+            padding: 12px 18px;
+            background: #073e4e;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .botao:hover {
+            background: #087f86;
+        }
+
+        .ficha {
+            background: white;
+            padding: 24px;
+            border: 1px solid #dce6e9;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .ficha h2 {
+            margin-top: 0;
+        }
+
+        .campos {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit, minmax(230px, 1fr)
+            );
+            gap: 18px;
+        }
+
+        .campo {
+            padding: 12px 0;
+            border-bottom: 1px solid #e8eef0;
+            overflow-wrap: anywhere;
+        }
+
+        .campo strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .observacao {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid #e8eef0;
+            overflow-wrap: anywhere;
+        }
+
+        .observacao strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .nota {
+            font-size: 14px;
+            color: #526973;
+        }
+
+        .tabela {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #dce6e9;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #edf4f7;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            main {
+                padding: 15px;
+            }
+
+            .ficha {
+                padding: 16px;
+            }
+
+            .campos {
+                grid-template-columns: 1fr;
+            }
+        }
+                body {
+            font-size: 13px;
+        }
+
+        header {
+            padding: 16px 22px;
+        }
+
+        header span {
+            font-size: 12px;
+        }
+
+        header h1 {
+            margin: 8px 0;
+            font-size: 22px;
+        }
+
+        header p {
+            margin: 6px 0 0;
+            font-size: 12px;
+        }
+
+        main {
+            max-width: 1000px;
+            padding: 16px;
+        }
+
+        main > p {
+            margin: 0 0 12px;
+        }
+
+        .acoes {
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .botao {
+            padding: 8px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .ficha {
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+        }
+
+        .ficha h2 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .campos {
+            grid-template-columns: repeat(
+                auto-fit, minmax(200px, 1fr)
+            );
+            gap: 8px 14px;
+        }
+
+        .campo {
+            padding: 7px 0;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .campo strong {
+            margin-bottom: 4px;
+        }
+
+        .observacao {
+            margin-top: 12px;
+            padding-top: 10px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .observacao strong {
+            margin-bottom: 4px;
+        }
+
+        .nota {
+            margin: 8px 0 0;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        th,
+        td {
+            padding: 7px 8px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 14px;
+            }
+
+            header h1 {
+                font-size: 19px;
+            }
+
+            main {
+                padding: 10px;
+            }
+
+            .ficha {
+                padding: 12px;
+            }
+
+            .campos {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <span>
+            Central de Informações da Gerência de Pinheiro — CIGP
+        </span>
+
+        <h1>Registro do poço {{ poco.identificacao }}</h1>
+
+        <p>
+            Última atualização:
+            {{ poco.atualizado_em|date:"d/m/Y H:i"|default:"Não informada" }}
+        </p>
+    </header>
+
+    <main>
+        <p>
+            <a href="{% url 'admin:pocos_poco_changelist' %}">
+                ← Voltar para a lista de poços
+            </a>
+        </p>
+
+        <div class="acoes">
+            {% if perms.pocos.change_poco %}
+                <a
+                    class="botao"
+                    href="{% url 'admin:pocos_poco_change' poco.pk %}"
+                >
+                    Editar cadastro
+                </a>
+            {% endif %}
+
+            <a
+                class="botao"
+                href="{% url 'relatorio_poco' poco.pk %}"
+            >
+                Gerar relatório em PDF
+            </a>
+        </div>
+
+        <section class="ficha">
+            <h2>Identificação e localização</h2>
+
+            <div class="campos">
+                <div class="campo">
+                    <strong>Poço</strong>
+                    {{ poco.identificacao }}
+                </div>
+
+                <div class="campo">
+                    <strong>Sistema / Cidade</strong>
+
+                    {% if poco.sistema_id %}
+                        {{ poco.sistema.cidade }}
+                    {% else %}
+                        {{ poco.cidade|default:"Não informado" }}
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Código do sistema</strong>
+
+                    {% if poco.sistema_id %}
+                        {{ poco.sistema.codigo }}
+                    {% else %}
+                        {{ poco.codigo_sistema|default:"Não informado" }}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="observacao">
+                <strong>Localidade / Endereço</strong>
+                {{ poco.localidade_endereco|default:"Não informado"|linebreaksbr }}
+            </div>
+        </section>
+
+        <section class="ficha">
+            <h2>Características do poço</h2>
+
+            <div class="campos">
+                <div class="campo">
+                    <strong>Situação operacional</strong>
+                    {{ poco.get_situacao_operacional_display|default:"Não informado" }}
+                </div>
+
+                <div class="campo">
+                    <strong>Destino da água</strong>
+                    {{ poco.get_destino_agua_display|default:"Não informado" }}
+                </div>
+
+                <div class="campo">
+                    <strong>Profundidade</strong>
+
+                    {% if poco.profundidade_poco != None %}
+                        {{ poco.profundidade_poco }} m
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Diâmetro do poço</strong>
+
+                    {% if poco.diametro_poco != None %}
+                        {{ poco.diametro_poco }} polegadas
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Quantidade de tubos</strong>
+
+                    {% if poco.quantidade_tubos != None %}
+                        {{ poco.quantidade_tubos }}
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Tipo de tubo</strong>
+                    {{ poco.get_tipo_tubo_display|default:"Não informado" }}
+                </div>
+
+                <div class="campo">
+                    <strong>Possui redução?</strong>
+                    {{ poco.possui_reducao|yesno:"Sim,Não,Não informado" }}
+                </div>
+
+                <div class="campo">
+                    <strong>Diâmetro após a redução</strong>
+
+                    {% if poco.possui_reducao == False %}
+                        Não se aplica
+                    {% elif poco.diametro_reducao != None %}
+                        {{ poco.diametro_reducao }} polegadas
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Nível estático</strong>
+
+                    {% if poco.nivel_estatico != None %}
+                        {{ poco.nivel_estatico }} m
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Nível dinâmico</strong>
+
+                    {% if poco.nivel_dinamico != None %}
+                        {{ poco.nivel_dinamico }} m
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Rebaixamento</strong>
+
+                    {% if poco.rebaixamento != None %}
+                        {{ poco.rebaixamento|floatformat:2 }} m
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+            </div>
+
+            <p class="nota">
+                Rebaixamento = nível dinâmico − nível estático.
+            </p>
+
+            <div class="observacao">
+                <strong>Posição dos filtros (m)</strong>
+                {{ poco.posicao_filtros|default:"Não informado"|linebreaksbr }}
+            </div>
+
+            <div class="observacao">
+                <strong>Observações do poço</strong>
+                {{ poco.observacoes_poco|default:"Não informado"|linebreaksbr }}
+            </div>
+        </section>
+
+        <section class="ficha">
+            <h2>Conjunto motor-bomba — CMB</h2>
+
+            <div class="campos">
+                <div class="campo">
+                    <strong>Marca</strong>
+                    {{ poco.marca_cmb|default:"Não informado" }}
+                </div>
+
+                <div class="campo">
+                    <strong>Modelo</strong>
+                    {{ poco.modelo_cmb|default:"Não informado" }}
+                </div>
+
+                <div class="campo">
+                    <strong>Potência</strong>
+
+                    {% if poco.potencia_cmb != None %}
+                        {{ poco.potencia_cmb }}
+                        {{ poco.get_unidade_potencia_display|default:"(unidade não informada)" }}
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Tensão nominal</strong>
+
+                    {% if poco.tensao_nominal != None %}
+                        {{ poco.tensao_nominal }} V
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Crivo</strong>
+
+                    {% if poco.crivo != None %}
+                        {{ poco.crivo }} m
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="ficha">
+            <h2>Condições de exploração</h2>
+
+            <div class="tabela">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data da coleta</th>
+                            <th>Vazão (m³/h)</th>
+                            <th>Nível dinâmico (m)</th>
+                            <th>Colocação da bomba/submersa (m)</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in poco.condicoes_exploracao.all %}
+                            <tr>
+                                <td>
+                                    {{ item.data_coleta|date:"d/m/Y"|default:"Não informada" }}
+                                </td>
+
+                                <td>
+                                    {% if item.vazao != None %}
+                                        {{ item.vazao|floatformat:"-3" }}
+                                    {% else %}
+                                        Não informado
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if item.nivel_dinamico != None %}
+                                        {{ item.nivel_dinamico }}
+                                    {% else %}
+                                        Não informado
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    {% if item.colocacao_bomba != None %}
+                                        {{ item.colocacao_bomba }}
+                                    {% else %}
+                                        Não informado
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4">
+                                    Nenhuma condição de exploração cadastrada.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <section class="ficha">
+            <h2>Operação mensal</h2>
+
+            <div class="campos">
+                <div class="campo">
+                    <strong>Mês de referência</strong>
+                    {{ poco.mes_referencia|date:"m/Y"|default:"Não informado" }}
+                </div>
+
+                <div class="campo">
+                    <strong>Horas trabalhadas</strong>
+
+                    {% if poco.horas_trabalhadas != None %}
+                        {{ poco.horas_trabalhadas }} h
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                                <div class="campo">
+                    <strong>Média de horas trabalhadas por dia</strong>
+
+                    {% if poco.dias_trabalhados != None %}
+                        {{ poco.dias_trabalhados|floatformat:2 }} h/dia
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Vazão</strong>
+
+                    {% if poco.vazao != None %}
+                        {{ poco.vazao|floatformat:"-3" }} m³/h
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+
+                <div class="campo">
+                    <strong>Volume aduzido no mês</strong>
+
+                    {% if poco.volume_aduzido != None %}
+                        {{ poco.volume_aduzido|floatformat:2 }} m³
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </div>
+            </div>
+
+                        <p class="nota">
+                Média de horas por dia = horas trabalhadas no mês
+                ÷ quantidade de dias do mês de referência.
+                Volume aduzido = vazão × horas trabalhadas,
+                considerando a vazão constante no período.
+            </p>
+
+        </section>
+
+        <section class="ficha">
+            <h2>Datas do cadastro</h2>
+
+            <div class="campos">
+                <div class="campo">
+                    <strong>Data de inclusão</strong>
+                    {{ poco.criado_em|date:"d/m/Y H:i"|default:"Não informada" }}
+                </div>
+
+                <div class="campo">
+                    <strong>Última atualização</strong>
+                    {{ poco.atualizado_em|date:"d/m/Y H:i"|default:"Não informada" }}
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

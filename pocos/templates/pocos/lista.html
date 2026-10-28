@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Central de Informações da Gerência de Pinheiro — CIGP</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f7;
+            color: #17313b;
+        }
+
+        header {
+            background: #073e4e;
+            color: white;
+            padding: 30px;
+        }
+
+        header h1 {
+            margin: 10px 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 25px;
+        }
+
+        .lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .poco {
+            background: white;
+            padding: 20px;
+            border: 1px solid #dce6e9;
+            border-radius: 12px;
+        }
+
+        .poco h2 {
+            margin-top: 0;
+        }
+
+        .poco p {
+            margin-bottom: 0;
+        }
+
+        a {
+            color: #087f86;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <span>CAEMA — Regional Pinheiro</span>
+        <h1>Central de Informações da Gerência de Pinheiro — CIGP</h1>
+    </header>
+
+    <main>
+        <p><a href="{% url 'admin:index' %}">Abrir administração</a></p>
+
+        <h2>Poços cadastrados</h2>
+
+        <div class="lista">
+            {% for poco in pocos %}
+                <article class="poco">
+                    <h2>
+    <a href="{% url 'detalhe_poco' poco.pk %}">
+        {{ poco.identificacao }}
+    </a>
+</h2>
+                    <strong>{{ poco.cidade }}</strong>
+                    <p>Código do sistema: {{ poco.codigo_sistema }}</p>
+                </article>
+            {% empty %}
+                <p>Nenhum poço cadastrado ainda.</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

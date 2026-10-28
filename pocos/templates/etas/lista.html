@@ -1,0 +1,617 @@
+{% extends "admin/base_site.html" %}
+
+{% block extrastyle %}
+    {{ block.super }}
+
+    <style>
+        #content {
+            padding: 18px 24px;
+        }
+
+        .central-etas,
+        .central-etas * {
+            box-sizing: border-box;
+        }
+
+        .central-etas {
+            max-width: 1250px;
+            margin: auto;
+            color: var(--body-fg);
+        }
+
+        .eta-cabecalho {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .eta-identidade {
+            border-left: 4px solid #159a9c;
+            padding-left: 14px;
+        }
+
+        .eta-identidade .legenda {
+            color: var(--body-quiet-color);
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .eta-identidade h1 {
+            margin: 5px 0;
+            color: var(--body-fg);
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+        .eta-identidade p {
+            margin: 0;
+            color: var(--body-quiet-color);
+            font-size: 12px;
+        }
+
+        .eta-voltar {
+            color: var(--link-fg);
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .eta-filtro {
+            display: flex;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding: 14px;
+            border: 1px solid var(--hairline-color);
+            border-radius: 10px;
+            background: var(--darkened-bg);
+        }
+
+        .eta-filtro .campo {
+            flex: 1;
+            min-width: 190px;
+        }
+
+        .eta-filtro label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .eta-filtro select {
+            width: 100%;
+            height: 36px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--body-bg);
+            color: var(--body-fg);
+            font-family: inherit;
+            font-size: 12px;
+        }
+
+        .eta-botao {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 36px;
+            padding: 8px 14px;
+            border: 0;
+            border-radius: 6px;
+            background: #087d80;
+            color: white !important;
+            font-family: inherit;
+            font-size: 12px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .eta-botao:hover {
+            background: #066467;
+        }
+
+        .eta-botao.secundario {
+            background: var(--body-bg);
+            color: var(--link-fg) !important;
+            border: 1px solid var(--border-color);
+        }
+
+        .sistema-eta {
+            margin-bottom: 22px;
+            overflow: hidden;
+            border: 1px solid var(--hairline-color);
+            border-radius: 12px;
+            background: var(--body-bg);
+        }
+
+        .sistema-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--hairline-color);
+            background: var(--darkened-bg);
+        }
+
+        .sistema-topo h2 {
+            margin: 0 0 5px;
+            padding: 0;
+            background: transparent;
+            color: var(--body-fg);
+            font-size: 18px;
+        }
+
+        .sistema-topo p {
+            margin: 0;
+            color: var(--body-quiet-color);
+            font-size: 11px;
+        }
+
+        .eta-situacao {
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--body-quiet-color);
+            font-size: 11px;
+        }
+
+        .caminho-titulo {
+            margin: 0;
+            padding: 16px 18px 4px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .caminho-ajuda {
+            margin: 0;
+            padding: 0 18px;
+            color: var(--body-quiet-color);
+            font-size: 11px;
+        }
+
+        .caminho-agua {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            padding: 16px 18px;
+        }
+
+        .etapa {
+            min-width: 0;
+            overflow: hidden;
+            border: 1px solid var(--hairline-color);
+            border-top: 3px solid #159a9c;
+            border-radius: 8px;
+            background: var(--body-bg);
+        }
+
+        .etapa:nth-child(2) {
+            border-top-color: #3985bd;
+        }
+
+        .etapa:nth-child(3) {
+            border-top-color: #6f70bf;
+        }
+
+        .etapa:nth-child(4) {
+            border-top-color: #b77c35;
+        }
+
+        .etapa summary {
+            position: relative;
+            padding: 14px;
+            cursor: pointer;
+        }
+
+        .etapa summary::marker {
+            color: #159a9c;
+        }
+
+        .etapa-numero {
+            display: block;
+            margin: 8px 0;
+            color: var(--body-quiet-color);
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        .etapa-nome {
+            display: block;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .etapa-resumo {
+            display: block;
+            margin-top: 7px;
+            color: var(--body-quiet-color);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .etapa-conteudo {
+            padding: 12px 14px;
+            border-top: 1px solid var(--hairline-color);
+            background: var(--darkened-bg);
+        }
+
+        .etapa-conteudo p {
+            margin: 0;
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .etapa-conteudo .pendente {
+            margin-top: 10px;
+            color: var(--body-quiet-color);
+        }
+
+        .eta-paineis {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            padding: 0 18px 18px;
+        }
+
+        .eta-painel {
+            padding: 14px;
+            border: 1px solid var(--hairline-color);
+            border-radius: 8px;
+        }
+
+        .eta-painel h3 {
+            margin: 0 0 8px;
+            font-size: 12px;
+        }
+
+        .eta-painel p {
+            margin: 0;
+            color: var(--body-quiet-color);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .eta-vazio {
+            padding: 24px;
+            border: 1px dashed var(--border-color);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .eta-vazio p {
+            margin: 0 0 12px;
+        }
+
+        .eta-rodape {
+            margin: 12px 0;
+            color: var(--body-quiet-color);
+            font-size: 11px;
+        }
+
+        .central-etas a:focus-visible,
+        .central-etas button:focus-visible,
+        .central-etas summary:focus-visible,
+        .central-etas select:focus-visible {
+            outline: 3px solid #159a9c;
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 1000px) {
+            .caminho-agua {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 650px) {
+            #content {
+                padding: 14px;
+            }
+
+            .eta-identidade h1 {
+                font-size: 21px;
+            }
+
+            .caminho-agua,
+            .eta-paineis {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .eta-filtro .campo {
+                flex-basis: 100%;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">CIGP</a>
+        &rsaquo; ETAs
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="central-etas">
+
+        <header class="eta-cabecalho">
+            <div class="eta-identidade">
+                <span class="legenda">
+                    Gerência de Pinheiro
+                </span>
+
+                <h1>Estações de Tratamento de Água</h1>
+
+                <p>
+                    Informações organizadas pelo caminho da água.
+                </p>
+            </div>
+
+            <div style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;">
+    {% if perms.pocos.add_eta %}
+        <a
+            class="eta-botao"
+            href="{% url 'admin:pocos_eta_add' %}"
+        >
+            + Cadastrar ETA
+        </a>
+    {% endif %}
+
+    <a class="eta-voltar" href="{% url 'admin:index' %}">
+        ← Voltar para a CIGP
+    </a>
+</div>
+        </header>
+
+        <form
+            class="eta-filtro"
+            method="get"
+            action="{% url 'lista_etas' %}"
+        >
+            <div class="campo">
+                <label for="eta-sistema">Sistema</label>
+
+                <select id="eta-sistema" name="sistema">
+                    <option value="">Todos os sistemas</option>
+
+                    {% for sistema in sistemas_filtro %}
+                        <option
+                            value="{{ sistema.codigo }}"
+                            {% if sistema.codigo|stringformat:"s" == sistema_selecionado %}selected{% endif %}
+                        >
+                            {{ sistema.cidade }} — {{ sistema.codigo }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button class="eta-botao" type="submit">
+                Visualizar sistema
+            </button>
+
+            <a
+                class="eta-botao secundario"
+                href="{% url 'lista_etas' %}"
+            >
+                Exibir todos
+            </a>
+        </form>
+
+        {% for eta in etas %}
+            <section class="sistema-eta">
+
+                <div class="sistema-topo">
+                    <div>
+                        <h2>{{ eta.nome }}</h2>
+
+<p>
+    {{ eta.sistema.cidade }}
+    · Código {{ eta.sistema.codigo }}
+    · Unidade de negócio: Pinheiro
+</p>
+                    </div>
+
+                    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:10px;">
+    <span class="eta-situacao">
+        {{ eta.get_situacao_operacional_display|default:"Não informada" }}
+    </span>
+
+    {% if perms.pocos.change_eta %}
+        <a
+            class="eta-botao"
+            href="{% url 'admin:pocos_eta_change' eta.pk %}"
+        >
+            Editar ETA
+        </a>
+    {% endif %}
+</div>
+                </div>
+
+                <p class="caminho-titulo">
+                    Caminho da água
+                </p>
+
+                <p class="caminho-ajuda">
+                    Clique em uma etapa para conhecer as informações
+                    que serão organizadas nela.
+                </p>
+
+                <div class="caminho-agua">
+
+                    <details class="etapa">
+                        <summary>
+                            <span class="etapa-numero">
+                                ETAPA 01
+                            </span>
+
+                            <span class="etapa-nome">
+                                Captação
+                            </span>
+
+                            <span class="etapa-resumo">
+                                Da fonte de água até a entrada
+                                do tratamento.
+                            </span>
+                        </summary>
+
+                        <div class="etapa-conteudo">
+                            <p>
+                                Manancial, estrutura de captação,
+                                bombas de água bruta, motores
+                                e quadros de comando.
+                            </p>
+
+                            <p class="pendente">
+                                Informações ainda não cadastradas.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="etapa">
+                        <summary>
+                            <span class="etapa-numero">
+                                ETAPA 02
+                            </span>
+
+                            <span class="etapa-nome">
+                                Tratamento
+                            </span>
+
+                            <span class="etapa-resumo">
+                                Processos e equipamentos
+                                utilizados no tratamento.
+                            </span>
+                        </summary>
+
+                        <div class="etapa-conteudo">
+                            <p>
+                                Etapas de tratamento, filtros,
+                                leitos filtrantes e equipamentos
+                                de dosagem.
+                            </p>
+
+                            <p class="pendente">
+                                Informações ainda não cadastradas.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="etapa">
+                        <summary>
+                            <span class="etapa-numero">
+                                ETAPA 03
+                            </span>
+
+                            <span class="etapa-nome">
+                                Reservação
+                            </span>
+
+                            <span class="etapa-resumo">
+                                Estruturas de armazenamento
+                                de água tratada.
+                            </span>
+                        </summary>
+
+                        <div class="etapa-conteudo">
+                            <p>
+                                Identificação dos reservatórios,
+                                capacidade, características
+                                e condições operacionais.
+                            </p>
+
+                            <p class="pendente">
+                                Informações ainda não cadastradas.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="etapa">
+                        <summary>
+                            <span class="etapa-numero">
+                                ETAPA 04
+                            </span>
+
+                            <span class="etapa-nome">
+                                Distribuição
+                            </span>
+
+                            <span class="etapa-resumo">
+                                Bombeamento e destino
+                                da água tratada.
+                            </span>
+                        </summary>
+
+                        <div class="etapa-conteudo">
+                            <p>
+                                Bombas de água tratada, motores,
+                                quadros de comando e destinos
+                                do abastecimento.
+                            </p>
+
+                            <p class="pendente">
+                                Informações ainda não cadastradas.
+                            </p>
+                        </div>
+                    </details>
+
+                </div>
+
+                <div class="eta-paineis">
+                    <section class="eta-painel">
+                        <h3>Equipamentos</h3>
+
+                        <p>
+                            O cadastro dos equipamentos deste
+                            sistema será conectado nas próximas etapas.
+                        </p>
+                    </section>
+
+                    <section class="eta-painel">
+                        <h3>Operação mensal</h3>
+
+                        <p>
+                            Horas de funcionamento, vazões e volumes
+                            serão apresentados após o cadastro.
+                        </p>
+                    </section>
+
+                    <section class="eta-painel">
+                        <h3>Manutenções e eventos</h3>
+
+                        <p>
+                            O histórico de serviços e as fotos
+                            serão conectados após a criação do cadastro.
+                        </p>
+                    </section>
+                </div>
+
+            </section>
+        {% empty %}
+            <div class="eta-vazio">
+                <p>Nenhum sistema encontrado.</p>
+
+                <a
+                    class="eta-botao"
+                    href="{% url 'lista_etas' %}"
+                >
+                    Exibir todos os sistemas
+                </a>
+            </div>
+        {% endfor %}
+
+        <p class="eta-rodape">
+    {{ etas|length }} ETA(s) exibida(s).
+</p>
+
+    </div>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

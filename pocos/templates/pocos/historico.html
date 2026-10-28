@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Histórico do poço {{ poco.identificacao }} — CIGP</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: white;
+            color: #172b38;
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+        }
+
+        main {
+            padding: 10px;
+        }
+
+        .voltar {
+            display: inline-block;
+            margin-bottom: 12px;
+            color: #176493;
+            text-decoration: none;
+        }
+
+        body.mini .voltar {
+            display: none;
+        }
+
+        .resumo {
+            padding: 12px;
+            border: 1px solid #c8d7e1;
+        }
+
+        .resumo h1 {
+            margin: 0;
+            font-size: 19px;
+        }
+
+        .titulo-eventos {
+            margin: 10px 0 0;
+            padding: 9px 10px;
+            border: 1px solid #c8d7e1;
+            background: #e5f0fa;
+            font-size: 14px;
+        }
+
+        .tabela {
+            overflow-x: auto;
+            border: 1px solid #c8d7e1;
+            border-top: none;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 8px;
+            background: #edf2f5;
+            text-align: left;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 8px;
+            border-top: 1px solid #dce5eb;
+            vertical-align: top;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .data {
+            white-space: nowrap;
+        }
+
+        .descricao {
+            min-width: 260px;
+            overflow-wrap: anywhere;
+        }
+
+        .descricao p {
+            margin: 4px 0 0;
+        }
+
+        .vazio {
+            padding: 16px;
+            color: #536d78;
+        }
+
+        .coluna-acoes {
+            width: 36px;
+            min-width: 36px;
+            padding: 6px;
+            vertical-align: top;
+        }
+
+        .acoes-evento {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+        }
+
+        .excluir-evento {
+            margin: 0;
+        }
+
+        .botao-excluir,
+        .botao-fotos {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            border: none;
+            border-radius: 3px;
+            color: white;
+            line-height: 1;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .botao-excluir {
+            background: #c0392b;
+            font-size: 14px;
+        }
+
+        .botao-excluir:hover {
+            background: #962d22;
+        }
+
+        .botao-fotos {
+            background: #287bb5;
+        }
+
+        .botao-fotos:hover {
+            background: #176493;
+        }
+
+        .botao-fotos svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .botao-excluir:focus-visible,
+        .botao-fotos:focus-visible {
+            outline: 2px solid #172b38;
+            outline-offset: 2px;
+        }
+
+                .resumo h1 {
+            margin: 0 0 10px;
+        }
+
+        .resumo p {
+            margin: 0;
+            padding: 6px 0;
+            border-bottom: 1px solid #edf1f4;
+            overflow-wrap: anywhere;
+        }
+
+        .resumo p:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+
+<body class="{% if request.GET.mini == '1' %}mini{% endif %}">
+    <main>
+        <a
+            class="voltar"
+            href="{% url 'admin:pocos_poco_changelist' %}"
+        >
+            ← Voltar para a lista de poços
+        </a>
+
+        <section class="resumo">
+            <h1>POÇO: {{ poco.identificacao }}</h1>
+
+            <p>
+                <strong>Sigla:</strong>
+                {{ poco.identificacao }}
+            </p>
+
+            <p>
+                <strong>Data de inclusão:</strong>
+
+                {% if poco.criado_em %}
+                    {{ poco.criado_em|date:"d/m/Y H:i" }}
+                {% else %}
+                    Não informada
+                {% endif %}
+            </p>
+
+            <p>
+                <strong>Unidade de negócio:</strong>
+                Pinheiro
+            </p>
+
+            <p>
+                <strong>CMB atual:</strong>
+                {{ poco.marca_cmb|default:"Marca não informada" }}
+                — Modelo:
+                {{ poco.modelo_cmb|default:"Não informado" }}
+                — Potência:
+
+                {% if poco.potencia_cmb != None %}
+                    {{ poco.potencia_cmb }}
+                    {{ poco.unidade_potencia|default:"" }}
+                {% else %}
+                    Não informada
+                {% endif %}
+            </p>
+        </section>
+
+        <h2 class="titulo-eventos">Eventos</h2>
+
+        <div class="tabela">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Responsável</th>
+                        <th>Data</th>
+                        <th>Descrição do evento</th>
+                        <th
+                            class="coluna-acoes"
+                            aria-label="Ações do evento"
+                        ></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in historicos %}
+                        <tr>
+                            <td>
+                                {{ item.responsavel|default:"Não informado" }}
+                            </td>
+
+                            <td class="data">
+                                {{ item.registrado_em|date:"d/m/Y" }}
+                                <br>
+                                {{ item.registrado_em|date:"H:i:s" }}
+                            </td>
+
+                            <td class="descricao">
+                                <strong>
+                                    {{ item.get_tipo_evento_display }}
+                                </strong>
+
+                                {% if item.descricao %}
+                                    <p>
+                                        {{ item.descricao|linebreaksbr }}
+                                    </p>
+                                {% endif %}
+                            </td>
+
+                            <td class="coluna-acoes">
+                                <div class="acoes-evento">
+                                    {% if perms.pocos.delete_historicopoco %}
+                                        <form
+                                            class="excluir-evento"
+                                            method="post"
+                                            action="{% url 'excluir_evento' poco.pk item.pk %}"
+                                            onsubmit="return confirm('Excluir este evento e suas fotos do histórico definitivamente? O cadastro atual do poço não será alterado.');"
+                                        >
+                                            {% csrf_token %}
+
+                                            <input
+                                                type="hidden"
+                                                name="mini"
+                                                value="{{ request.GET.mini }}"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="botao-excluir"
+                                                title="Excluir evento"
+                                                aria-label="Excluir evento"
+                                            >
+                                                ×
+                                            </button>
+                                        </form>
+                                    {% endif %}
+
+                                    {% if item.fotos.exists %}
+                                        <a
+                                            class="botao-fotos"
+                                            href="{% url 'fotos_evento' poco.pk item.pk %}{% if request.GET.mini == '1' %}?mini=1{% endif %}"
+                                            title="Ver fotos deste evento"
+                                            aria-label="Ver fotos deste evento"
+                                        >
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="2"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                aria-hidden="true"
+                                            >
+                                                <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"></path>
+                                                <circle cx="12" cy="13" r="3"></circle>
+                                            </svg>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="vazio">
+                                Nenhum evento registrado.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
