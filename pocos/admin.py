@@ -452,7 +452,7 @@ if admin.site.is_registered(Group):
 if admin.site.is_registered(User):
     admin.site.unregister(User)
 
-    from .models import Eta
+from .models import Eta
 
 
 @admin.register(Eta)
@@ -515,3 +515,12 @@ class EtaAdmin(admin.ModelAdmin):
             request,
             **kwargs,
         )
+    def response_post_save_change(self, request, obj):
+        from django.shortcuts import redirect
+
+        return redirect("lista_etas")
+
+    def response_post_save_add(self, request, obj):
+        from django.shortcuts import redirect
+
+        return redirect("lista_etas")

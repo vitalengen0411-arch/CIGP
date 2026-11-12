@@ -364,6 +364,163 @@
             padding: 6px;
             font-size: 11px;
         }
+
+                /* Padrão visual da CIGP */
+
+        #header {
+            padding: 12px 24px;
+            background: #073e4e;
+            color: white;
+        }
+
+        #site-name {
+            font-size: 21px;
+        }
+
+        #site-name a,
+        #site-name a:visited {
+            color: white;
+        }
+
+        #user-tools {
+            font-size: 10px;
+        }
+
+        .cigp-navegacao {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+            padding: 12px;
+            border-radius: 7px;
+            background: #073e4e;
+        }
+
+        .cigp-navegacao a,
+        .cigp-navegacao button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 32px;
+            padding: 7px 12px;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            background: transparent;
+            color: white !important;
+            font-family: inherit;
+            font-size: 12px;
+            line-height: 1.4;
+            text-decoration: none;
+        }
+
+        .cigp-navegacao a:hover,
+        .cigp-navegacao .ativo {
+            background: #087dbc;
+        }
+
+        .cigp-navegacao button:disabled {
+            border-color: #63818c;
+            background: #365d6b;
+            color: #e0e9ee !important;
+            cursor: not-allowed;
+        }
+
+        .cigp-navegacao a:focus-visible,
+        .cigp-navegacao button:focus-visible {
+            outline: 3px solid #f0bd28;
+            outline-offset: 3px;
+        }
+
+        .painel-filtros {
+            overflow: hidden;
+            border-color: #ccdeec;
+            border-radius: 7px;
+        }
+
+        .filtro-cabecalho,
+        .filtro-acoes {
+            background: #eef5fb;
+        }
+
+        .filtro-cabecalho h2 {
+            color: #164969;
+        }
+
+        .botao-novo-poco a,
+        .filtro-acoes button {
+            border-radius: 5px;
+            background: #087dbc;
+            color: white !important;
+        }
+
+        .botao-novo-poco a:hover,
+        .filtro-acoes button:hover {
+            background: #06669c;
+        }
+
+        .filtro-acoes a {
+            border: 1px solid #c9d9e5;
+            border-radius: 5px;
+            background: white;
+            color: #145682 !important;
+        }
+
+        #changelist .results {
+            border: 1px solid #ccdeec;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        #changelist table thead th {
+            background: #eef5fb;
+            color: #164969;
+        }
+
+        #changelist table thead th a {
+            color: #164969;
+        }
+
+        #changelist .field-acao_historico a,
+        #changelist .field-abrir_registro a {
+            background: #087dbc !important;
+        }
+
+        .historico-cabecalho {
+            background: #073e4e;
+        }
+
+        @media (max-width: 650px) {
+            #header {
+                padding: 12px 16px;
+            }
+
+            #site-name {
+                font-size: 17px;
+            }
+
+            .cigp-navegacao a,
+            .cigp-navegacao button {
+                flex: 1 1 120px;
+            }
+        }
+
+        .cigp-navegacao a,
+.cigp-navegacao button {
+    gap: 7px;
+}
+
+.cigp-navegacao svg {
+    display: block;
+    flex: 0 0 17px;
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
     </style>
 {% endblock %}
 
@@ -488,6 +645,59 @@
 {% endblock %}
 
 {% block content %}
+    <nav class="cigp-navegacao" aria-label="Módulos da CIGP">
+    <a href="{% url 'admin:index' %}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 10 12 3l9 7"/>
+            <path d="M5 9v12h5v-7h4v7h5V9"/>
+        </svg>
+        <span>Início</span>
+    </a>
+
+    <a
+        class="ativo"
+        href="{% url 'admin:pocos_poco_changelist' %}"
+        aria-current="page"
+    >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 3h6v7H9z"/>
+            <path d="M12 10v7M6 17h12v4H6z"/>
+            <path d="M5 7h4M15 7h4"/>
+        </svg>
+        <span>Poços</span>
+    </a>
+
+    <a href="{% url 'lista_etas' %}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+                d="M12 3C10 7 5 12 5 16a7 7 0 0 0 14 0c0-4-5-9-7-13Z"
+            />
+        </svg>
+        <span>ETAs</span>
+    </a>
+
+    <button
+        type="button"
+        disabled
+        title="Módulo em preparação"
+    >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="1"/>
+            <path d="M3 9h18M8 12v5M12 12v5M16 12v5"/>
+            <path d="M6 6.5h1M10 6.5h1"/>
+        </svg>
+        <span>Quadros de Comando</span>
+    </button>
+
+    <a href="{% url 'mapa_sistemas' %}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Z"/>
+            <path d="M9 3v16M15 5v16"/>
+        </svg>
+        <span>Mapa dos Sistemas</span>
+    </a>
+</nav>
+
     {{ block.super }}
 
     <dialog

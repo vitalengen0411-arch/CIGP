@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+    {{ title }} | {{ site_title|default:"CIGP" }}
+{% endblock %}
+
+{% block branding %}
+    <div id="site-name">
+        <a href="{% url 'admin:index' %}">
+            {{ site_header|default:"Central de Informações da Gerência de Pinheiro — CIGP" }}
+        </a>
+    </div>
+{% endblock %}
+
+{% block usertools %}
+    {% if user.is_authenticated and user.is_staff %}
+        <div id="user-tools">
+            <form
+                id="logout-form"
+                method="post"
+                action="{% url 'admin:logout' %}"
+            >
+                {% csrf_token %}
+
+                <button type="submit">
+                    Encerrar sessão
+                </button>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

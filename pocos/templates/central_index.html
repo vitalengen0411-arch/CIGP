@@ -1,131 +1,253 @@
 {% extends "admin/base_site.html" %}
+{% load static %}
 
 {% block extrastyle %}
-    {{ block.super }}
+{{ block.super }}
 
-    <style>
+<style>
+    #header {
+        padding: 12px 24px;
+        background: #073e4e;
+        color: white;
+    }
+
+    #site-name {
+        font-size: 21px;
+    }
+
+    #site-name a,
+    #site-name a:visited {
+        color: white;
+    }
+
+    #user-tools {
+        font-size: 10px;
+    }
+
+    #content {
+        padding: 20px 24px;
+    }
+
+    .inicio-cigp,
+    .inicio-cigp * {
+        box-sizing: border-box;
+    }
+
+    .inicio-cigp {
+        max-width: 1400px;
+        margin: auto;
+        font-family: Arial, sans-serif;
+    }
+
+    .boas-vindas {
+        margin: 0 0 6px;
+        color: var(--body-fg);
+        font-size: 17px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .orientacao {
+        margin: 0 0 16px;
+        color: var(--body-quiet-color);
+        font-size: 12px;
+    }
+
+    .menus-cigp {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+        border: 1px solid #073e4e;
+        border-radius: 7px;
+        background: #073e4e;
+    }
+
+    .menus-cigp .menu-cigp {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        padding: 8px 16px;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        background: #087dbc;
+        color: white;
+        font-family: inherit;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.4;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .menus-cigp a.menu-cigp:visited {
+        color: white;
+    }
+
+    .menus-cigp a.menu-cigp:hover {
+        background: #06669c;
+        color: white;
+    }
+
+    .menus-cigp .menu-cigp:disabled {
+        border-color: #63818c;
+        background: #365d6b;
+        color: #e0e9ee;
+        cursor: not-allowed;
+    }
+
+    .menus-cigp .menu-cigp:focus-visible {
+        outline: 3px solid #f0bd28;
+        outline-offset: 3px;
+    }
+
+    @media (max-width: 650px) {
         #header {
-            padding: 12px 24px;
+            padding: 12px 16px;
         }
 
         #site-name {
-            font-size: 21px;
-        }
-
-        #user-tools {
-            font-size: 10px;
+            font-size: 17px;
         }
 
         #content {
-            padding: 20px 24px;
+            padding: 16px;
         }
 
         .boas-vindas {
-            margin: 0 0 6px;
-            color: var(--body-fg);
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-
-        .orientacao {
-            margin: 0 0 14px;
-            color: var(--body-fg);
-            font-size: 12px;
-        }
-
-        .menus-cigp {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: var(--darkened-bg);
-            border: 1px solid var(--hairline-color);
-            border-radius: 6px;
+            font-size: 15px;
         }
 
         .menus-cigp .menu-cigp {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 100px;
-            min-height: 34px;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            background: var(--primary);
-            color: white;
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
+            flex: 1 1 140px;
         }
+    }
+    .menus-cigp .menu-cigp {
+    gap: 7px;
+}
 
-        .menus-cigp a.menu-cigp:hover {
-            background: var(--secondary);
-        }
+.menus-cigp .menu-cigp svg {
+    display: block;
+    flex: 0 0 17px;
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+/* Fundo exclusivo da página inicial */
 
-        .menus-cigp .menu-cigp:disabled {
-            background: var(--border-color);
-            color: var(--body-quiet-color);
-            cursor: not-allowed;
-        }
+body {
+    background-color: #1286ba;
+    background-image: url("{% static 'pocos/img/fundo_caema.png' %}");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
 
-        @media (max-width: 600px) {
-            #header {
-                padding: 12px 16px;
-            }
+#container,
+.main,
+#content {
+    background: transparent;
+}
 
-            #site-name {
-                font-size: 17px;
-            }
+.inicio-cigp {
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 4px 18px rgba(7, 62, 78, 0.15);
+}
 
-            #content {
-                padding: 16px;
-            }
+.inicio-cigp .boas-vindas {
+    color: #173448;
+}
 
-            .boas-vindas {
-                font-size: 14px;
-            }
-        }
-    </style>
+.inicio-cigp .orientacao {
+    color: #526c80;
+}
+
+@media (max-width: 650px) {
+    body {
+        background-attachment: scroll;
+    }
+
+    .inicio-cigp {
+        padding: 14px;
+    }
+}
+</style>
 {% endblock %}
 
 {% block content_title %}{% endblock %}
 
 {% block content %}
+<div class="inicio-cigp">
+
     <h2 class="boas-vindas">
         Bem-vindo à Central de Informações da Gerência de Pinheiro — CIGP
     </h2>
 
     <p class="orientacao">
-        Selecione o Menu que deseja prosseguir
+        Selecione o menu para prosseguir.
     </p>
 
-    <nav class="menus-cigp" aria-label="Menus da plataforma">
-        {% if perms.pocos.view_poco or perms.pocos.change_poco %}
-            <a
-                class="menu-cigp"
-                href="{% url 'admin:pocos_poco_changelist' %}"
-            >
-                Poços
-            </a>
-        {% endif %}
+    <nav class="menus-cigp" aria-label="Módulos da plataforma">
 
-       <a
-    class="menu-cigp"
-    href="{% url 'lista_etas' %}"
->
-    ETAs
-</a>
-                <a
+    {% if perms.pocos.view_poco or perms.pocos.change_poco %}
+        <a
             class="menu-cigp"
-            href="{% url 'mapa_sistemas' %}"
+            href="{% url 'admin:pocos_poco_changelist' %}"
         >
-            Mapa dos Sistemas
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 3h6v7H9z"/>
+                <path d="M12 10v7M6 17h12v4H6z"/>
+                <path d="M5 7h4M15 7h4"/>
+            </svg>
+            <span>Poços</span>
         </a>
-    </nav>
+    {% endif %}
+
+    <a class="menu-cigp" href="{% url 'lista_etas' %}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+                d="M12 3C10 7 5 12 5 16a7 7 0 0 0 14 0c0-4-5-9-7-13Z"
+            />
+        </svg>
+        <span>ETAs</span>
+    </a>
+
+    <button
+        class="menu-cigp"
+        type="button"
+        disabled
+        title="Módulo em preparação"
+    >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="1"/>
+            <path d="M3 9h18M8 12v5M12 12v5M16 12v5"/>
+            <path d="M6 6.5h1M10 6.5h1"/>
+        </svg>
+        <span>Quadros de Comando</span>
+    </button>
+
+    <a class="menu-cigp" href="{% url 'mapa_sistemas' %}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Z"/>
+            <path d="M9 3v16M15 5v16"/>
+        </svg>
+        <span>Mapa dos Sistemas</span>
+    </a>
+
+</nav>
+
+</div>
 {% endblock %}
 
 {% block sidebar %}{% endblock %}
